@@ -38,9 +38,13 @@ class Selector:
         score_map = None
         for component in self.score_components:
             weighted_score = component(inputs) * component.weight
-            score_map = weighted_score if score_map is None else score_map + weighted_score
+            score_map = (
+                weighted_score
+                if score_map is None
+                else score_map + weighted_score
+            )
 
-        candidate_mask = self.candidate_generator(score_map, inputs)
+        candidate_mask = self.candidate_generator(score_map, inputs, budget)
         regions = self.region_grouper(candidate_mask, score_map, inputs)
         allocation = self.region_allocator(regions, budget, inputs)
 

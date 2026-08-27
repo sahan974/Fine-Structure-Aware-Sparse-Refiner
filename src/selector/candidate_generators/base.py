@@ -10,15 +10,25 @@ if TYPE_CHECKING:
 else:
     Tensor = Any
 
-from ..types import SelectorInput
+from ..types import SelectionBudget, SelectorInput
 
 
 class CandidateGenerator(ABC):
     """Convert a continuous score map into a binary candidate mask."""
 
     @abstractmethod
-    def generate(self, score_map: Tensor, inputs: SelectorInput) -> Tensor:
+    def generate(
+        self,
+        score_map: Tensor,
+        inputs: SelectorInput,
+        budget: SelectionBudget,
+    ) -> Tensor:
         """Return a boolean mask with the same spatial shape as ``score_map``."""
 
-    def __call__(self, score_map: Tensor, inputs: SelectorInput) -> Tensor:
-        return self.generate(score_map, inputs)
+    def __call__(
+        self,
+        score_map: Tensor,
+        inputs: SelectorInput,
+        budget: SelectionBudget,
+    ) -> Tensor:
+        return self.generate(score_map, inputs, budget)
