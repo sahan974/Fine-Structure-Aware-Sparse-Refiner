@@ -36,9 +36,15 @@ class SelectorInput:
 
 @dataclass(frozen=True)
 class Region:
-    """One candidate component proposed for refinement."""
+    """One candidate component proposed for refinement.
+
+    ``region_id`` is unique within one selector call. ``batch_index`` identifies
+    the source tile, and ``pixel_indices`` contains flattened ``H * W`` indices
+    relative to that tile.
+    """
 
     region_id: int
+    batch_index: int
     pixel_indices: Tensor
     aggregate_score: float
     area: int
